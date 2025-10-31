@@ -9,10 +9,10 @@ import (
 // for a valid return value.
 func TestHelloName(t *testing.T){
 	name := "Jang chanwook"
-	want := regexp.MustCompile("\\b"+name+"\\b") // error fixed 1 :'\b' -> "\\b"
+	want := regexp.MustCompile(`\b`+name+`\b`) // not error but my fault 1 :`\b` <- '\b'
 	msg, err := Hello("Jang chanwook")
 	if !want.MatchString(msg) || err != nil {
-		t.Errorf("Hello(\"Jang chanwook\") = %q, %v, want match for %#q, nil", msg, err, want)
+		t.Errorf(`Hello("Jang chanwook") = %q, %v, want match for %#q, nil`, msg, err, want)
 	}
 }
 
@@ -21,6 +21,6 @@ func TestHelloName(t *testing.T){
 func TestHelloEmpty(t *testing.T){
 	msg, err := Hello("")
 	if msg != "" || err == nil {
-		t.Errorf("Hello(\"\") = %q, %v, want \"\", error", msg, err) //error fixed 2 : double quote(") between double quotes("") needs to be written as \"
+		t.Errorf(`Hello("") = %q, %v, want "", error`, msg, err) //same fault : ` ` <- ""
 	}
 }
