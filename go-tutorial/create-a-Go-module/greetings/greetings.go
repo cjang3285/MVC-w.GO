@@ -15,8 +15,7 @@ func Hello(name string) (string,error) {
 	}
 	
 	// Create a message using a random format.
-	// message := fmt.Sprintf(randomFormat(), name) //commented out for intended error
-	message := fmt.Sprint(randomFormat()) // no name to insert in randomformat string
+	message := fmt.Sprintf(randomFormat(), name)
 	return message, nil	
 }
 
