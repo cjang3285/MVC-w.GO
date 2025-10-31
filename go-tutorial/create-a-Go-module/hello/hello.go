@@ -12,17 +12,16 @@ func main() {
         // the time, source file, and line number.
         log.SetPrefix("greetings: ")
 	log.SetFlags(0)
+
+	// A slice of names.
+	names := []string{"Kim minjun", "Jang chanwook", "Go language"}
 	
-	// Request a greeting message.
-	message, err := greetings.Hello("Jang Chanwook")
-	// If an error was returned, print it to the console and
-	// exit the program.	
+	// Request greeting messages for the names.
+	messages, err := greetings.Hellos(names)	
 	if err != nil {
 		log.Fatal(err)
 	}
-
-	// If no error was returned, print the returned message
-	// to the console.
-	// get a greeting message and print it.
-	fmt.Println(message)
+	// If no error was returned, print the returned map of
+	// message to the console.
+	fmt.Println(messages)
 }
