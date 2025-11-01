@@ -68,7 +68,7 @@ func GetTodo(w http.ResponseWriter, r *http.Request) {
     }
     
     todo, err := models.GetTodoByID(uint(id))
-    if err != nil a{
+    if err != nil {
         http.Error(w, err.Error(), http.StatusInternalServerError)
         return
     }

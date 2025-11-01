@@ -15,7 +15,7 @@ var DB *gorm.DB
 func ConnectDB() error {
 	var err error
 	//DSN : data source name = DB connection information string
-	dsn := "host=localhost user=myuser password=mypassword dbname=tododb port=5432 sslmode=disable"	
+	dsn := "host=localhost user=myuser password=mypassword dbname=db port=5432 sslmode=disable"	
 	
 	// gorm.Open():Connect to DB using GORM
 	// postgres.Open(dsn): using Psql driver
@@ -43,7 +43,7 @@ func CloseDB(){
 		// if no error
 		if err == nil {
 			//terminate the connection
-			sqlDB().Close()
+			sqlDB.Close()
 			log.Println("DB connection terminated")	
 		}
 	}
