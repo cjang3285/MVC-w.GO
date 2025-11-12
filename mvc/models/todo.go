@@ -6,6 +6,7 @@ package models
 import (
 	"time"
 	"mvc/config"
+	"encoding/json"
 )
 
 // Todo is a data model of DB
@@ -31,11 +32,28 @@ type Todo struct {
 // return todos becuase todos are now updated by Find function which used addr of todos (&todos)  
 // result is just a metadata of GORM execution
 func GetAllTodos() ([]Todo, error) {
-	
+	key := "todos:all"
+
+    	// check Redis cache first : appended logic
+    	val, err := config.RedisClient.Get(config.Ctx, key).Result()
+    	if err == nil {
+        	var cached []Todo
+        	json.Unmarshal([]byte(val), &cached)
+        	return cached, nil
+    	}
+
+    	// if not in cache, check DB : former logic + error handling
 	var todos []Todo
-	
-	result := config.DB.Find(&todos)
-	return todos, result.Error
+    	result := config.DB.Find(&todos) // by &, todos are updated in Find function.
+    	if result.Error != nil { 
+        	return nil, result.Error
+    	}
+
+    	// save to Redis : appended logic
+    	jsonData, _ := json.Marshal(todos)
+    	config.RedisClient.Set(config.Ctx, key, jsonData, time.Minute*5)
+
+    	return todos, nil // DB.Find error was just handled, so no need to return todos, result.error here anymore. 	
 }
 
 // GetTodoByID gets ID to search certain todo using ID and returns a todo using the ID
@@ -83,10 +101,6 @@ func DeleteTodo(id uint) error {
 	result := config.DB.Delete(&Todo{}, id)
 	return result.Error
 }
-
-
-
-
 
 
 

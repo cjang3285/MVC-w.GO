@@ -13,6 +13,9 @@ import (
 
 
 func main() {
+    if err := config.ConnectRedis(); err != nil {
+	log.Fatal("Redis connection failed:", err)
+    }
     if err := config.ConnectDB(); err != nil {
         log.Fatal("DB connetion failed:", err)
     }
