@@ -6,6 +6,7 @@ package routes
 import (
     "mvc/controllers"
     "github.com/gorilla/mux"
+    "github.com/prometheus/client_golang/prometheus/promhttp"
 )
 
 // SetupRoutes 
@@ -14,6 +15,8 @@ import (
 // even if URLs same, the function to call can be different by a method 
 func SetupRoutes() *mux.Router {
     r := mux.NewRouter()
+
+    r.PathPrefix("/metrics").Handler(promhttp.Handler())
     
     r.HandleFunc("/todos", controllers.GetTodos).Methods("GET")
     r.HandleFunc("/todos", controllers.CreateTodo).Methods("POST")
